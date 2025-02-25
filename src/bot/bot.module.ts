@@ -16,12 +16,12 @@ import { SabrliUpdate } from './sabrli.update';
 @Module({
   imports: [SequelizeModule.forFeature([Bot, Sahiy, Admin, Sabrli])],
   providers: [
-    SahiyService,
-    SahiyUpdate,
     BotService,
     BotUpdate,
     AdminService,
     AdminUpdate,
+    SahiyService,
+    SahiyUpdate,
     SabrliService,
     SabrliUpdate,
   ],

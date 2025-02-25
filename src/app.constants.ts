@@ -1,3 +1,3 @@
 
 
-export const BOT_NAME = 'Muruvvat Bot';
+export const BOT_NAME = 'Iskandarjon';

@@ -54,7 +54,7 @@ export class AdminService {
                 },
                 {
                   text: `Sabrlilar`,
-                  callback_data: `mijozlar_${admin.user_id}`,
+                  callback_data: `sabrlilar_${admin.user_id}`,
                 },
               ],
               [

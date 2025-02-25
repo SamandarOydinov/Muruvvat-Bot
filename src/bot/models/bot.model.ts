@@ -52,9 +52,4 @@ export class Bot extends Model<Bot, IBotCreationAttr> {
     defaultValue: false,
   })
   status: boolean;
-
-  @Column({
-    type: DataType.JSON
-  })
-  services: object
 }

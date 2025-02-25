@@ -16,8 +16,14 @@ export class SahiyUpdate {
     await this.sahiyService.onMuruvvat(ctx);
   }
 
-  @Action(/^barchaSabrli_+\d+$/)
-  async onAllSabrli(@Ctx() ctx: Context) {
-    await this.sahiyService.onAllSabrli(ctx);
+  @Action(/^korishSabrlilar_+\d+$/)
+  async onShowSabrlilarni(@Ctx() ctx: Context) {
+    console.log('object');
+    await this.sahiyService.onShowSabrlilarni(ctx);
+  }
+
+  @Action(/^istalganKishiga_+\d+$/)
+  async onToSomeone(@Ctx() ctx: Context) {
+    await this.sahiyService.onToSomeone(ctx);
   }
 }

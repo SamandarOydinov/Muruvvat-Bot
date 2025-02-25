@@ -416,6 +416,48 @@ sahiy location: ${newSahiy?.location}`,
               ctx.message.text,
             );
           }
+        } else if(sahiy.is_ehson){
+          const data = new Date()
+          const description = ctx.message.text;
+          sahiy.description_about_mahsulot = {data, description}
+          await sahiy.save()
+          await this.bot.telegram.sendMessage(process.env.ADMIN_ID!, ctx.message.text);
+
+          //adminga xabar yuborish jarayonini davom ettirish kerak
+
+          await ctx.reply('Sizning xabaringiz adminga yuborildi👌');
+          await ctx.reply(`biror bo'limni tanlang👇`, {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: `Muruvvat qilish`,
+                    callback_data: `muruvvat_${sahiy.user_id}`,
+                  },
+                  {
+                    text: `Sabrlilarni ko’rish`,
+                    callback_data: `barchaSabrli_${sahiy.user_id}`,
+                  },
+                ],
+                [
+                  {
+                    text: `Sozlamalar`,
+                    callback_data: `settings_${sahiy.user_id}`,
+                  },
+                  {
+                    text: `Admin bilan bog’lanish`,
+                    callback_data: `connectWithAdmin_${sahiy.user_id}`,
+                  },
+                ],
+                [
+                  {
+                    text: `Asosiy menyu`,
+                    callback_data: `MENU_${sahiy.user_id}`,
+                  },
+                ],
+              ],
+            },
+          });
         }
       }
       //  Sabrli

@@ -52,7 +52,7 @@ export class Sabrli extends Model<Sabrli, ISabrliCreationAttr> {
   @Column({
     type: DataType.STRING,
   })
-  xizmat: string;
+  description: string;
 
   @Column({
     type: DataType.JSON,
@@ -63,15 +63,6 @@ export class Sabrli extends Model<Sabrli, ISabrliCreationAttr> {
     type: DataType.STRING,
   })
   lang: string;
-
-  @ForeignKey(() => Sahiy)
-  @Column({
-    type: DataType.BIGINT,
-  })
-  sahiy_id: number;
-
-  @BelongsTo(() => Sahiy)
-  sahiy: Sahiy;
 
   @Column({
     type: DataType.STRING,

@@ -58,27 +58,27 @@ export class SahiyService {
             [
               {
                 text: `Muruvvat qilish`,
-                callback_data: `muruvvat_${sahiy.user_id}`,
+                callback_data: `muruvvat_${user_id}`,
               },
               {
                 text: `Sabrlilarni ko’rish`,
-                callback_data: `barchaSabrli_${sahiy.user_id}`,
+                callback_data: `korishSabrlilar_${user_id}`,
               },
             ],
             [
               {
                 text: `Sozlamalar`,
-                callback_data: `settings_${sahiy.user_id}`,
+                callback_data: `settings_${user_id}`,
               },
               {
                 text: `Admin bilan bog’lanish`,
-                callback_data: `connectWithAdmin_${sahiy.user_id}`,
+                callback_data: `connectWithAdmin_${user_id}`,
               },
             ],
             [
               {
                 text: `Asosiy menyu`,
-                callback_data: `MENU_${sahiy.user_id}`,
+                callback_data: `MENU_${user_id}`,
               },
             ],
           ],
@@ -116,18 +116,31 @@ export class SahiyService {
         },
       );
     } else {
-      let sahiylar = this.sahiyModel.findAll({ include: Sabrli });
-      console.log('sahiylar=>', sahiylar);
-      if (1) {
-      } else {
-        await ctx.reply(
-          "Do'stim hozircha ba'zi sabablarga ko'ra sabrlilar mavjud emas",
-        );
-      }
+      await ctx.reply('Kimga: ', {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: `Istalgan kishiga`,
+                callback_data: `istalganKishiga_${sahiy_id}`,
+              },
+              {
+                text: `Aniq bir kishiga`,
+                callback_data: `birKishiga_${sahiy_id}`,
+              },
+            ],
+          ],
+        },
+      });
+      // let sahiylar = await this.sahiyModel.findAll();
+      // console.log('sahiylar=>', sahiylar);
+      //   await ctx.reply(
+      //     "Do'stim hozircha ba'zi sabablarga ko'ra sabrlilar mavjud emas",
+      //   );
     }
   }
 
-  async onAllSabrli(ctx: Context) {
+  async onShowSabrlilarni(ctx: Context) {
     const contextAction = ctx.callbackQuery!['data'];
     const sahiy_id = contextAction.split('_')[1];
     const sahiy = await this.sahiyModel.findOne({
@@ -156,7 +169,73 @@ export class SahiyService {
         },
       );
     } else {
-      await ctx.reply('Siz barcha sabrlilar degan joyni bosdingiz');
+      await ctx.reply("biror bo'limni tanlang: ", {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: 'Barcha sabrlilar',
+                callback_data: `allSabrlilar_${sahiy_id}`,
+              },
+              {
+                text: "Hudud bo'yicha",
+                callback_data: `hududBuyicha_${sahiy_id}`,
+              },
+            ],
+            [
+              {
+                text: "Jins va yosh bo'yicha",
+                callback_data: `jinsVaYosh_${sahiy_id}`,
+              },
+              {
+                text: "Jins va o'lcham bo'yicha",
+                callback_data: `jinsVaUlcham_${sahiy_id}`,
+              },
+            ],
+            [
+              {
+                text: 'ortga qaytish',
+                callback_data: `ortgaFromShowSabrli_${sahiy_id}`,
+              },
+            ],
+          ],
+        },
+      });
+    }
+  }
+
+  async onToSomeone(ctx: Context) {
+    const contextAction = ctx.callbackQuery!['data'];
+    const sahiy_id = contextAction.split('_')[1];
+    const sahiy = await this.sahiyModel.findOne({
+      where: { user_id: sahiy_id },
+    });
+    if (!sahiy) {
+      await ctx.replyWithHTML(
+        'iltimos <b>/start</b> tugmasini bosing yoki pastdagi buttonni bosing',
+        {
+          parse_mode: 'HTML',
+          ...Markup.keyboard([['/start']])
+            .resize()
+            .oneTime(),
+        },
+      );
+    } else if (!sahiy.status) {
+      await ctx.reply(
+        `Iltimos, <b>Telefon raqamni yuborish</b> tugmasini bosing`,
+        {
+          parse_mode: 'HTML',
+          ...Markup.keyboard([
+            [Markup.button.contactRequest('Telefon raqamni yuborish')],
+          ])
+            .resize()
+            .oneTime(),
+        },
+      );
+    } else {
+      sahiy.is_ehson = true;
+      await sahiy.save();
+      await ctx.reply('Nima bermoqchisiz: ');
     }
   }
 }

@@ -43,9 +43,9 @@ export class Sahiy extends Model<Sahiy, ISahiyCreationAttr> {
   phone_number: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.JSON,
   })
-  description_about_mahsulot: string;
+  description_about_mahsulot: {data: Date, description: string};
 
   @Column({
     type: DataType.BOOLEAN,
@@ -72,4 +72,10 @@ export class Sahiy extends Model<Sahiy, ISahiyCreationAttr> {
     defaultValue: false,
   })
   status: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false
+  })
+  is_ehson: boolean
 }
